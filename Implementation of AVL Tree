@@ -1,0 +1,203 @@
+Write a function in C program to insert a new node with a given value
+into an AVL tree. Ensure that the tree remains balanced after
+insertion by performing rotations if necessary. Repeat the above
+operation to delete a node from AVL tree.
+Algorithm:
+CODE:-
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+CS23231 – Data Structures
+
+struct Node
+{
+int key;
+struct Node *left;
+struct Node *right;
+int height;
+};
+typedef struct Node node;
+int height(node *n)
+{
+if (n==NULL)
+return 0;
+return n-&gt;height;
+}
+node *findmin(node *tree)
+{ if(tree==NULL)
+return NULL;
+else if(tree-&gt;left==NULL)
+return tree;
+else
+return findmin(tree-&gt;left);
+}
+
+int max(int a,int b)
+{ return (a&gt;b)?a:b;
+}
+node *rightrotate(node *y)
+{ node *x=y-&gt;left;
+node *t2=x-&gt;right;
+
+x-&gt;right=y;
+y-&gt;left=t2;
+
+CS23231 – Data Structures
+
+y-&gt;height=1+max(height(y-&gt;left),height(y-&gt;right));
+x-&gt;height=1+max(height(x-&gt;left),height(x-&gt;right));
+return x;
+}
+
+node *leftrotate(node *x)
+{ node *y=x-&gt;right;
+node *t2=y-&gt;left;
+
+y-&gt;left=x;
+x-&gt;right=t2;
+x-&gt;height=1+max(height(x-&gt;left),height(x-&gt;right));
+y-&gt;height=1+max(height(y-&gt;left),height(y-&gt;right));
+return y;
+}
+int getbalance(struct Node *n)
+{
+if (n == NULL)
+return 0;
+return height(n-&gt;left) - height(n-&gt;right);
+}
+
+node *insert(node *tree,int k)
+{ if(tree==NULL)
+{ node *newnode=malloc(sizeof(node));
+newnode-&gt;key=k;
+newnode-&gt;left=NULL;
+newnode-&gt;right=NULL;
+newnode-&gt;height=1;
+tree=newnode;
+}
+
+CS23231 – Data Structures
+
+else if(k&lt;tree-&gt;key)
+tree-&gt;left=insert(tree-&gt;left,k);
+else if(k&gt;tree-&gt;key)
+tree-&gt;right=insert(tree-&gt;right,k);
+//else
+//return tree;
+tree-&gt;height=1+max(height(tree-&gt;left),height(tree-&gt;right));
+int bal=getbalance(tree);
+if(bal&gt;1 &amp;&amp; k&lt;tree-&gt;left-&gt;key)
+return rightrotate(tree);
+if(bal&lt;-1 &amp;&amp; k&gt;tree-&gt;right-&gt;key)
+return leftrotate(tree);
+if(bal&gt;1 &amp;&amp; k&gt;tree-&gt;left-&gt;key)
+{ tree-&gt;left=leftrotate(tree-&gt;left);
+return rightrotate(tree); }
+if(bal&lt;-1 &amp;&amp; k&lt;tree-&gt;right-&gt;key)
+{ tree-&gt;right=rightrotate(tree-&gt;right);
+return leftrotate(tree); }
+return tree;
+}
+
+node *delete(node *tree,int e)
+{ node *temp=malloc(sizeof(node));
+if(e&lt;tree-&gt;key)
+tree-&gt;left=delete(tree-&gt;left,e);
+else if(e&gt;tree-&gt;key)
+tree-&gt;right=delete(tree-&gt;right,e);
+else if(tree-&gt;left &amp;&amp; tree-&gt;right)
+{ temp=findmin(tree-&gt;right);
+tree-&gt;key=temp-&gt;key;
+tree-&gt;right=delete(tree-&gt;right,temp-&gt;key);
+}
+else
+
+CS23231 – Data Structures
+
+{ temp=tree;
+if(tree-&gt;left==NULL)
+tree=tree-&gt;right;
+else if(tree-&gt;right==NULL)
+tree=tree-&gt;left;
+free(temp);
+}
+if (tree == NULL)
+return tree;
+
+tree-&gt;height = 1 + max(height(tree-&gt;left),
+height(tree-&gt;right));
+
+int balance = getbalance(tree);
+
+// If this node becomes unbalanced,
+// then there are 4 cases
+
+// Left Left Case
+if (balance &gt; 1 &amp;&amp;
+getbalance(tree-&gt;left) &gt;= 0)
+return rightrotate(tree);
+
+// Left Right Case
+if (balance &gt; 1 &amp;&amp;
+getbalance(tree-&gt;left) &lt; 0)
+{
+tree-&gt;left = leftrotate(tree-&gt;left);
+return rightrotate(tree);
+}
+
+// Right Right Case
+if (balance &lt; -1 &amp;&amp;
+
+CS23231 – Data Structures
+
+getbalance(tree-&gt;right) &lt;= 0)
+return leftrotate(tree);
+
+// Right Left Case
+if (balance &lt; -1 &amp;&amp;
+getbalance(tree-&gt;right) &gt; 0)
+{
+tree-&gt;right = rightrotate(tree-&gt;right);
+return leftrotate(tree);
+}
+
+return tree;
+}
+void inorder(node *tree)
+{ if(tree!=NULL)
+{ //printf(&quot;%d &quot;,tree-&gt;key);
+inorder(tree-&gt;left);
+printf(&quot;%d &quot;,tree-&gt;key);
+inorder(tree-&gt;right);}
+}
+
+int main()
+{
+node *tree=NULL;
+int n;
+printf(&quot;ENTER TOT NO OF ELEMENTS&quot;);
+scanf(&quot;%d&quot;,&amp;n);
+int e;
+printf(&quot;ENETR ELEMENTS&quot;);
+for(int i=0;i&lt;n;i++)
+{ scanf(&quot;%d&quot;,&amp;e);
+tree=insert(tree,e);}
+//inorder(tree);
+
+CS23231 – Data Structures
+
+printf(&quot;ENETR ELE TO BE DELETED&quot;);
+scanf(&quot;%d&quot;,&amp;e);
+tree = delete(tree,e);
+inorder(tree);
+
+return 0;
+}
+
+OUTPUT:-
+
+ENTER TOT NO OF ELEMENTS9
+ENETR ELEMENTS9 5 10 0 6 11 -1 1 2
+ENETR ELE TO BE DELETED10
+-1 0 1 2 5 6 9 11
