@@ -1,0 +1,66 @@
+Write a C program to evaluate Arithmetic expression using stack.
+Algorithm:
+Code:
+
+#include &lt;ctype.h&gt;
+
+#define MAX_SIZE 100
+
+char stack[MAX_SIZE];
+int top = -1;
+
+void push(char value) {
+stack[++top] = value;
+}
+
+char pop() {
+return stack[top--];
+}
+
+int precedence(char op) {
+switch(op) {
+case &#39;+&#39;:
+case &#39;-&#39;:
+return 1;
+case &#39;*&#39;:
+
+CS23231 – Data Structures
+
+case &#39;/&#39;:
+return 2;
+default:
+return 0;
+}
+}
+
+void infixToPostfix(char *infix, char *postfix) {
+int i, j;
+for (i = 0, j = 0; infix[i] != &#39;\0&#39;; i++) {
+if (isalnum(infix[i])) {
+postfix[j++] = infix[i];
+} else if (infix[i] == &#39;(&#39;) {
+push(infix[i]);
+} else if (infix[i] == &#39;)&#39;) {
+while (stack[top] != &#39;(&#39;) {
+postfix[j++] = pop();
+}
+pop(); // Discard &#39;(&#39;
+} else {
+while (top != -1 &amp;&amp; precedence(stack[top]) &gt;= precedence(infix[i])) {
+postfix[j++] = pop();
+}
+push(infix[i]);
+}
+}
+while (top != -1) {
+postfix[j++] = pop();
+}
+postfix[j] = &#39;\0&#39;;
+}
+INPUT:
+5 3 + 4 * 6 2 / -
+
+CS23231 – Data Structures
+
+OUTPUT:
+Result : 32
