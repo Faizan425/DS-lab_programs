@@ -1,0 +1,71 @@
+Write a C program to perform infix to postfix conversion using stack.
+Algorithm:
+Code:
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+
+#define MAX_SIZE 100
+
+int isOperator(char ch) {
+return (ch == &#39;+&#39; || ch == &#39;-&#39; || ch == &#39;*&#39; || ch == &#39;/&#39;);
+}
+
+int precedence(char ch) {
+if (ch == &#39;+&#39; || ch == &#39;-&#39;)
+return 1;
+else if (ch == &#39;*&#39; || ch == &#39;/&#39;)
+return 2;
+else
+return 0;
+}
+
+void infixToPostfix(char *infix, char *postfix) {
+int i = 0, j = 0;
+char stack[MAX_SIZE];
+int top = -1;
+
+CS23231 – Data Structures
+
+while (infix[i] != &#39;\0&#39;) {
+if (isalnum(infix[i]))
+postfix[j++] = infix[i++];
+else if (infix[i] == &#39;(&#39;)
+stack[++top] = infix[i++];
+else if (infix[i] == &#39;)&#39;) {
+while (stack[top] != &#39;(&#39;)
+postfix[j++] = stack[top--];
+top--;
+i++;
+} else if (isOperator(infix[i])) {
+while (top != -1 &amp;&amp; precedence(stack[top]) &gt;= precedence(infix[i]))
+postfix[j++] = stack[top--];
+stack[++top] = infix[i++];
+}
+}
+
+while (top != -1)
+postfix[j++] = stack[top--];
+
+postfix[j] = &#39;\0&#39;;
+}
+
+int main() {
+char infix[MAX_SIZE], postfix[MAX_SIZE];
+
+printf(&quot;Enter infix expression: &quot;);
+scanf(&quot;%s&quot;, infix);
+
+infixToPostfix(infix, postfix);
+
+printf(&quot;Postfix expression: %s\n&quot;, postfix);
+
+CS23231 – Data Structures
+
+return 0;
+}
+OUTPUT:
+Enter infix expression: a+b*c
+Postfix expression: abc*+
