@@ -1,0 +1,63 @@
+Write a C program to create a graph and find the shortest path using
+Dijikstra’s Algorithm.
+Algorithm:
+CODE:
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define V 5
+
+CS23231 – Data Structures
+
+int minDistance(int dist[], bool sptSet[]) {
+int min = INT_MAX, min_index;
+for (int v = 0; v &lt; V; v++)
+if (sptSet[v] == false &amp;&amp; dist[v] &lt;= min)
+min = dist[v], min_index = v;
+return min_index;
+}
+
+void printSolution(int dist[]) {
+printf(&quot;Vertex \tDistance from Source\n&quot;);
+for (int i = 0; i &lt; V; i++)
+printf(&quot;%d \t%d\n&quot;, i, dist[i]);
+}
+
+void dijkstra(int graph[V][V], int src) {
+int dist[V];
+bool sptSet[V];
+
+for (int i = 0; i &lt; V; i++)
+dist[i] = INT_MAX, sptSet[i] = false;
+
+dist[src] = 0;
+
+for (int count = 0; count &lt; V - 1; count++) {
+int u = minDistance(dist, sptSet);
+sptSet[u] = true;
+for (int v = 0; v &lt; V; v++)
+if (!sptSet[v] &amp;&amp; graph[u][v] &amp;&amp; dist[u] != INT_MAX &amp;&amp; dist[u] + graph[u][v] &lt; dist[v])
+dist[v] = dist[u] + graph[u][v];
+}
+
+printSolution(dist);
+
+CS23231 – Data Structures
+
+}
+
+int main() {
+int graph[V][V] = {
+{0, 4, 0, 0, 0},
+{4, 0, 8, 0, 0},
+{0, 8, 0, 7, 0},
+{0, 0, 7, 0, 9},
+{0, 0, 0, 9, 0}
+};
+
+dijkstra(graph, 0);
+
+return 0;
+}
