@@ -1,0 +1,406 @@
+Write a C program to implement the following operations on Singly
+Linked List.
+(i) Polynomial Addition
+(ii) Polynomial Subtraction
+(iii) Polynomial Multiplication
+Algorithm:
+Code:
+Polynomial addition:
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct poly
+{
+int coeff;
+int pow;
+struct poly *Next;
+};
+typedef struct poly Poly;
+void Create(Poly *List);
+void Display(Poly *List);
+void Addition(Poly *Poly1, Poly *Poly2, Poly *Result);
+int main()
+{
+Poly *Poly1 = malloc(sizeof(Poly));
+Poly *Poly2 = malloc(sizeof(Poly));
+Poly *Result = malloc(sizeof(Poly));
+Poly1-&gt;Next = NULL;
+Poly2-&gt;Next = NULL;
+printf(&quot;Enter the values for first polynomial :\n&quot;);
+Create(Poly1);
+printf(&quot;The polynomial equation is : &quot;);
+
+CS23231 – Data Structures
+
+Display(Poly1);
+printf(&quot;\nEnter the values for second polynomial :\n&quot;);
+Create(Poly2);
+printf(&quot;The polynomial equation is : &quot;);
+Display(Poly2);
+Addition(Poly1, Poly2, Result);
+printf(&quot;\nThe polynomial equation addition result is : &quot;);
+Display(Result);
+return 0;
+}
+void Create(Poly *List)
+{
+int choice;
+Poly *Position, *NewNode;
+Position = List;
+do
+{
+NewNode = malloc(sizeof(Poly));
+printf(&quot;Enter the coefficient : &quot;);
+scanf(&quot;%d&quot;, &amp;NewNode-&gt;coeff);
+printf(&quot;Enter the power : &quot;);
+scanf(&quot;%d&quot;, &amp;NewNode-&gt;pow);
+NewNode-&gt;Next = NULL;
+Position-&gt;Next = NewNode;
+Position = NewNode;
+printf(&quot;Enter 1 to continue : &quot;);
+scanf(&quot;%d&quot;, &amp;choice);
+} while(choice == 1);
+}
+void Display(Poly *List)
+
+CS23231 – Data Structures
+
+{
+Poly *Position;
+Position = List-&gt;Next;
+while(Position != NULL)
+{
+printf(&quot;%dx^%d&quot;, Position-&gt;coeff, Position-&gt;pow);
+Position = Position-&gt;Next;
+if(Position != NULL &amp;&amp; Position-&gt;coeff &gt; 0)
+{
+printf(&quot;+&quot;);
+}
+}
+}
+void Addition(Poly *Poly1, Poly *Poly2, Poly *Result)
+{
+Poly *Position;
+Poly *NewNode;
+
+Poly1 = Poly1-&gt;Next;
+Poly2 = Poly2-&gt;Next;
+Result-&gt;Next = NULL;
+Position = Result;
+while(Poly1 != NULL &amp;&amp; Poly2 != NULL)
+{
+NewNode = malloc(sizeof(Poly));
+if(Poly1-&gt;pow == Poly2-&gt;pow)
+{
+NewNode-&gt;coeff = Poly1-&gt;coeff + Poly2-&gt;coeff;
+NewNode-&gt;pow = Poly1-&gt;pow;
+Poly1 = Poly1-&gt;Next;
+
+CS23231 – Data Structures
+
+Poly2 = Poly2-&gt;Next;
+}
+else if(Poly1-&gt;pow &gt; Poly2-&gt;pow)
+{
+NewNode-&gt;coeff = Poly1-&gt;coeff;
+NewNode-&gt;pow = Poly1-&gt;pow;
+Poly1 = Poly1-&gt;Next;
+}
+else if(Poly1-&gt;pow &lt; Poly2-&gt;pow)
+{
+NewNode-&gt;coeff = Poly2-&gt;coeff;
+NewNode-&gt;pow = Poly2-&gt;pow;
+Poly2 = Poly2-&gt;Next;
+}
+NewNode-&gt;Next = NULL;
+Position-&gt;Next = NewNode;
+Position = NewNode;
+}
+while(Poly1 != NULL || Poly2 != NULL)
+{
+NewNode = malloc(sizeof(Poly));
+if(Poly1 != NULL)
+{
+NewNode-&gt;coeff = Poly1-&gt;coeff;
+NewNode-&gt;pow = Poly1-&gt;pow;
+Poly1 = Poly1-&gt;Next;
+}
+if(Poly2 != NULL)
+{
+
+CS23231 – Data Structures
+
+NewNode-&gt;coeff = Poly2-&gt;coeff;
+NewNode-&gt;pow = Poly2-&gt;pow;
+Poly2 = Poly2-&gt;Next;
+}
+NewNode-&gt;Next = NULL;
+Position-&gt;Next = NewNode;
+Position = NewNode;
+}
+}
+Polynomial Subtraction:
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct poly
+{
+int coeff;
+int pow;
+struct poly *Next;
+};
+typedef struct poly Poly;
+void Create(Poly *List);
+void Display(Poly *List);
+void Subtraction(Poly *Poly1, Poly *Poly2, Poly *Result);
+int main()
+{
+Poly *Poly1 = malloc(sizeof(Poly));
+Poly *Poly2 = malloc(sizeof(Poly));
+Poly *Result = malloc(sizeof(Poly));
+Poly1-&gt;Next = NULL;
+Poly2-&gt;Next = NULL;
+
+CS23231 – Data Structures
+
+printf(&quot;Enter the values for first polynomial :\n&quot;);
+Create(Poly1);
+printf(&quot;The polynomial equation is : &quot;);
+Display(Poly1);
+printf(&quot;\nEnter the values for second polynomial :\n&quot;);
+Create(Poly2);
+printf(&quot;The polynomial equation is : &quot;);
+Display(Poly2);
+Subtraction(Poly1, Poly2, Result);
+printf(&quot;\nThe polynomial equation subtraction result is : &quot;);
+Display(Result);
+return 0;
+}
+void Create(Poly *List)
+{
+int choice;
+Poly *Position, *NewNode;
+Position = List;
+do
+{
+NewNode = malloc(sizeof(Poly));
+printf(&quot;Enter the coefficient : &quot;);
+scanf(&quot;%d&quot;, &amp;NewNode-&gt;coeff);
+printf(&quot;Enter the power : &quot;);
+scanf(&quot;%d&quot;, &amp;NewNode-&gt;pow);
+NewNode-&gt;Next = NULL;
+Position-&gt;Next = NewNode;
+Position = NewNode;
+printf(&quot;Enter 1 to continue : &quot;);
+scanf(&quot;%d&quot;, &amp;choice);
+
+CS23231 – Data Structures
+
+} while(choice == 1);
+}
+void Display(Poly *List)
+{
+Poly *Position;
+Position = List-&gt;Next;
+while(Position != NULL)
+{
+printf(&quot;%dx^%d&quot;, Position-&gt;coeff, Position-&gt;pow);
+Position = Position-&gt;Next;
+if(Position != NULL &amp;&amp; Position-&gt;coeff &gt; 0)
+{
+printf(&quot;+&quot;);
+}
+}
+}
+void Subtraction(Poly *Poly1, Poly *Poly2, Poly *Result)
+{
+Poly *Position;
+Poly *NewNode;
+
+Poly1 = Poly1-&gt;Next;
+Poly2 = Poly2-&gt;Next;
+Result-&gt;Next = NULL;
+Position = Result;
+while(Poly1 != NULL &amp;&amp; Poly2 != NULL)
+{
+NewNode = malloc(sizeof(Poly));
+if(Poly1-&gt;pow == Poly2-&gt;pow)
+{
+
+CS23231 – Data Structures
+
+NewNode-&gt;coeff = Poly1-&gt;coeff - Poly2-&gt;coeff;
+NewNode-&gt;pow = Poly1-&gt;pow;
+Poly1 = Poly1-&gt;Next;
+Poly2 = Poly2-&gt;Next;
+}
+else if(Poly1-&gt;pow &gt; Poly2-&gt;pow)
+{
+NewNode-&gt;coeff = Poly1-&gt;coeff;
+NewNode-&gt;pow = Poly1-&gt;pow;
+Poly1 = Poly1-&gt;Next;
+}
+else if(Poly1-&gt;pow &lt; Poly2-&gt;pow)
+{
+NewNode-&gt;coeff = -(Poly2-&gt;coeff);
+NewNode-&gt;pow = Poly2-&gt;pow;
+Poly2 = Poly2-&gt;Next;
+}
+NewNode-&gt;Next = NULL;
+Position-&gt;Next = NewNode;
+Position = NewNode;
+}
+while(Poly1 != NULL || Poly2 != NULL)
+{
+NewNode = malloc(sizeof(Poly));
+if(Poly1 != NULL)
+{
+NewNode-&gt;coeff = Poly1-&gt;coeff;
+NewNode-&gt;pow = Poly1-&gt;pow;
+Poly1 = Poly1-&gt;Next;
+
+CS23231 – Data Structures
+
+}
+if(Poly2 != NULL)
+{
+NewNode-&gt;coeff = -(Poly2-&gt;coeff);
+NewNode-&gt;pow = Poly2-&gt;pow;
+Poly2 = Poly2-&gt;Next;
+}
+NewNode-&gt;Next = NULL;
+Position-&gt;Next = NewNode;
+Position = NewNode;
+}
+}
+Polynomial Multiplication:
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node {
+int data;
+int power;
+struct Node * next;
+} Node;
+Node * getNode(int data, int power) {
+Node * ref = (Node * ) malloc(sizeof(Node));
+if (ref == NULL) {
+return NULL;
+}
+ref-&gt;data = data;
+ref-&gt;power = power;
+ref-&gt;next = NULL;
+return ref;
+}
+void updateRecord(Node * ref, int data, int power) {
+ref-&gt;data = data;
+ref-&gt;power = power;
+}
+typedef struct MultiplyPolynomial {
+struct Node * head;
+} MultiplyPolynomial;
+MultiplyPolynomial * getMultiplyPolynomial() {
+MultiplyPolynomial * ref = (MultiplyPolynomial * ) malloc(sizeof(MultiplyPolynomial));
+if (ref == NULL) {
+return NULL;
+
+CS23231 – Data Structures
+
+}
+ref-&gt;head = NULL;
+return ref;
+}
+void insert(MultiplyPolynomial * ref, int data, int power) {
+if (ref-&gt;head == NULL) {
+ref-&gt;head = getNode(data, power);
+} else {
+Node * node = NULL;
+Node * temp = ref-&gt;head;
+Node * location = NULL;
+while (temp != NULL &amp;&amp; temp-&gt;power &gt;= power) {
+location = temp;
+temp = temp-&gt;next;
+}
+if (location != NULL &amp;&amp; location-&gt;power == power) {
+location-&gt;data = location-&gt;data + data;
+} else {
+node = getNode(data, power);
+if (location == NULL) {
+node-&gt;next = ref-&gt;head;
+ref-&gt;head = node;
+} else {
+node-&gt;next = location-&gt;next;
+location-&gt;next = node;
+}
+}
+}
+}
+MultiplyPolynomial * multiplyPolynomials(MultiplyPolynomial * ref, MultiplyPolynomial *
+other) {
+MultiplyPolynomial * result = getMultiplyPolynomial();
+Node * poly1 = ref-&gt;head;
+Node * temp = other-&gt;head;
+int power_value = 0;
+int coefficient = 0;
+while (poly1 != NULL) {
+temp = other-&gt;head;
+while (temp != NULL) {
+power_value = poly1-&gt;power + temp-&gt;power;
+coefficient = poly1-&gt;data * temp-&gt;data;
+insert(result, coefficient, power_value);
+temp = temp-&gt;next;
+}
+poly1 = poly1-&gt;next;
+}
+return result;
+}
+void display(MultiplyPolynomial * ref) {
+if (ref-&gt;head == NULL) {
+printf(&quot;Empty Polynomial &quot;);
+}
+printf(&quot; &quot;);
+Node * temp = ref-&gt;head;
+while (temp != NULL) {
+
+CS23231 – Data Structures
+
+if (temp != ref-&gt;head) {
+printf(&quot; + %d&quot;, temp-&gt;data);
+} else {
+printf(&quot;%d&quot;, temp-&gt;data);
+}
+if (temp-&gt;power != 0) {
+printf(&quot;x^%d&quot;, temp-&gt;power);
+}
+temp = temp-&gt;next;
+}
+printf(&quot;\n&quot;);
+}
+int main() {
+MultiplyPolynomial * a = getMultiplyPolynomial();
+MultiplyPolynomial * b = getMultiplyPolynomial();
+insert(a, 9, 3);
+insert(a, 4, 2);
+insert(a, 3, 0);
+insert(a, 7, 1);
+insert(a, 3, 4);
+insert(b, 7, 3);
+insert(b, 4, 0);
+insert(b, 6, 1);
+insert(b, 1, 2);
+printf(&quot;\n Polynomial A\n&quot;);
+display(a);
+printf(&quot; Polynomial B\n&quot;);
+display(b);
+MultiplyPolynomial * result = multiplyPolynomials(a, b);
+printf(&quot; Result\n&quot;);
+display(result);
+}
+
+OUTPUT
+
+Polynomial A
+3x^4 + 9x^3 + 4x^2 + 7x^1 + 3
+Polynomial B
+7x^3 + 1x^2 + 6x^1 + 4
+Result
+21x^7 + 39x^6 + 67x^5 + 91x^4 + 55x^3 + 52x^2 + 46x^1 + 12
