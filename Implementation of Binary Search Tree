@@ -1,0 +1,224 @@
+Write a C program to implement a Binary Search Tree and perform the
+following operations.
+(i) Insert
+(ii) Delete
+(iii) Search
+(iv) Display
+Algorithm:
+CODE:-
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// Define a structure for the BST node
+struct Node {
+int data;
+struct Node *left, *right;
+};
+
+// Function to create a new BST node
+struct Node* createNode(int data) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode-&gt;data = data;
+newNode-&gt;left = newNode-&gt;right = NULL;
+return newNode;
+}
+
+// Function to insert a node into the BST
+struct Node* insertNode(struct Node* root, int data) {
+
+CS23231 – Data Structures
+
+if (root == NULL) return createNode(data);
+
+if (data &lt; root-&gt;data)
+
+root-&gt;left = insertNode(root-&gt;left, data);
+else if (data &gt; root-&gt;data)
+root-&gt;right = insertNode(root-&gt;right, data);
+
+return root;
+}
+
+// Function to find the minimum value node in a tree
+struct Node* findMin(struct Node* node) {
+struct Node* current = node;
+
+while (current &amp;&amp; current-&gt;left != NULL)
+current = current-&gt;left;
+
+return current;
+}
+
+// Function to delete a node from the BST
+struct Node* deleteNode(struct Node* root, int data) {
+if (root == NULL) return root;
+
+if (data &lt; root-&gt;data)
+root-&gt;left = deleteNode(root-&gt;left, data);
+else if (data &gt; root-&gt;data)
+root-&gt;right = deleteNode(root-&gt;right, data);
+else {
+if (root-&gt;left == NULL) {
+struct Node* temp = root-&gt;right;
+free(root);
+
+CS23231 – Data Structures
+
+return temp;
+} else if (root-&gt;right == NULL) {
+struct Node* temp = root-&gt;left;
+free(root);
+return temp;
+}
+
+struct Node* temp = findMin(root-&gt;right);
+root-&gt;data = temp-&gt;data;
+root-&gt;right = deleteNode(root-&gt;right, temp-&gt;data);
+}
+
+return root;
+}
+
+// Function to search a node in the BST
+struct Node* searchNode(struct Node* root, int data) {
+if (root == NULL || root-&gt;data == data)
+return root;
+
+if (root-&gt;data &lt; data)
+return searchNode(root-&gt;right, data);
+
+return searchNode(root-&gt;left, data);
+}
+
+// Function to perform in-order traversal and display the tree
+void inOrder(struct Node* root) {
+if (root != NULL) {
+inOrder(root-&gt;left);
+printf(&quot;%d &quot;, root-&gt;data);
+inOrder(root-&gt;right);
+}
+
+CS23231 – Data Structures
+
+}
+
+int main() {
+struct Node* root = NULL;
+int choice, data,n;
+printf(&quot;Enter the no of elements to be inserted&quot;);
+scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter elements&quot;);
+for(int i=0;i&lt;n;i++)
+{ scanf(&quot;%d&quot;,&amp;data);
+root=insertNode(root, data);}
+while (1) {
+printf(&quot;\nBinary Search Tree Operations Menu\n&quot;);
+printf(&quot;1. Insert\n&quot;);
+printf(&quot;2. Delete\n&quot;);
+printf(&quot;3. Search\n&quot;);
+printf(&quot;4. Display\n&quot;);
+printf(&quot;5. Exit\n&quot;);
+printf(&quot;Enter your choice: &quot;);
+scanf(&quot;%d&quot;, &amp;choice);
+
+switch (choice) {
+case 1:
+printf(&quot;Enter data to insert: &quot;);
+scanf(&quot;%d&quot;, &amp;data);
+root = insertNode(root, data);
+printf(&quot;%d inserted.\n&quot;, data);
+break;
+
+case 2:
+printf(&quot;Enter data to delete: &quot;);
+scanf(&quot;%d&quot;, &amp;data);
+root = deleteNode(root, data);
+
+CS23231 – Data Structures
+
+printf(&quot;%d deleted.\n&quot;, data);
+break;
+
+case 3:
+printf(&quot;Enter data to search: &quot;);
+scanf(&quot;%d&quot;, &amp;data);
+struct Node* foundNode = searchNode(root, data);
+if (foundNode != NULL)
+printf(&quot;%d found in the tree.\n&quot;, data);
+else
+printf(&quot;%d not found in the tree.\n&quot;, data);
+break;
+
+case 4:
+printf(&quot;In-order display of the BST: &quot;);
+inOrder(root);
+printf(&quot;\n&quot;);
+break;
+
+case 5:
+exit(0);
+break;
+
+default:
+printf(&quot;Invalid choice! Please try again.\n&quot;);
+}
+}
+
+return 0;
+}
+
+OUTPUT:-
+Enter the no of elements to be inserted6
+
+CS23231 – Data Structures
+
+Enter elements100 90 110 80 95 105
+
+Binary Search Tree Operations Menu
+1. Insert
+2. Delete
+3. Search
+4. Display
+5. Exit
+Enter your choice: 4
+In-order display of the BST: 80 90 95 100 105 110
+
+Binary Search Tree Operations Menu
+1. Insert
+2. Delete
+3. Search
+4. Display
+5. Exit
+Enter your choice: 2
+Enter data to delete: 90
+90 deleted.
+
+Binary Search Tree Operations Menu
+1. Insert
+2. Delete
+3. Search
+4. Display
+5. Exit
+Enter your choice: 4
+In-order display of the BST: 80 95 100 105 110
+
+Binary Search Tree Operations Menu
+1. Insert
+2. Delete
+
+CS23231 – Data Structures
+
+3. Search
+4. Display
+5. Exit
+Enter your choice: 3
+Enter data to search: 80
+80 found in the tree.
+
+Binary Search Tree Operations Menu
+1. Insert
+2. Delete
+3. Search
+4. Display
+5. Exit
+Enter your choice: 5
