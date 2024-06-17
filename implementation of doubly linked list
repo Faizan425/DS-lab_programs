@@ -1,0 +1,240 @@
+Write a C program to implement the following operations on Doubly
+Linked List.
+(i) Insertion
+(ii) Deletion
+(iii) Search
+(iv) Display
+Algorithm:
+Code:
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct node
+{
+struct node *Prev;
+int Element;
+struct node *Next;
+};
+typedef struct node Node;
+int IsEmpty(Node *List);
+int IsLast(Node *Position);
+Node *Find(Node *List, int x);
+void InsertBeg(Node *List, int e);
+void InsertLast(Node *List, int e);
+void InsertMid(Node *List, int p, int e);
+void DeleteBeg(Node *List);
+void DeleteEnd(Node *List);
+void DeleteMid(Node *List, int e);
+void Traverse(Node *List);
+int main()
+{
+
+CS23231 – Data Structures
+
+Node *List = malloc(sizeof(Node));
+List-&gt;Prev = NULL;
+List-&gt;Next = NULL;
+Node *Position;
+int ch, e, p;
+printf(&quot;1.Insert Beg \n2.Insert Middle \n3.Insert End&quot;);
+printf(&quot;\n4.Delete Beg \n5.Delete Middle \n6.Delete End&quot;);
+printf(&quot;\n7.Find \n8.Traverse \n9.Exit\n&quot;);
+do
+{
+printf(&quot;Enter your choice : &quot;);
+scanf(&quot;%d&quot;, &amp;ch);
+switch(ch)
+{
+case 1:
+printf(&quot;Enter the element : &quot;);
+scanf(&quot;%d&quot;, &amp;e);
+InsertBeg(List, e);
+break;
+case 2:
+printf(&quot;Enter the position element : &quot;);
+scanf(&quot;%d&quot;, &amp;p);
+printf(&quot;Enter the element : &quot;);
+scanf(&quot;%d&quot;, &amp;e);
+InsertMid(List, p, e);
+break;
+case 3:
+printf(&quot;Enter the element : &quot;);
+scanf(&quot;%d&quot;, &amp;e);
+InsertLast(List, e);
+
+CS23231 – Data Structures
+
+break;
+case 4:
+DeleteBeg(List);
+break;
+case 5:
+printf(&quot;Enter the element : &quot;);
+scanf(&quot;%d&quot;, &amp;e);
+DeleteMid(List, e);
+break;
+case 6:
+DeleteEnd(List);
+break;
+case 7:
+printf(&quot;Enter the element : &quot;);
+scanf(&quot;%d&quot;, &amp;e);
+Position = Find(List, e);
+if(Position != NULL)
+printf(&quot;Element found...!\n&quot;);
+else
+printf(&quot;Element not found...!\n&quot;);
+break;
+case 8:
+Traverse(List);
+break;
+}
+} while(ch &lt;= 8);
+return 0;
+}
+int IsEmpty(Node *List)
+{
+
+CS23231 – Data Structures
+
+if(List-&gt;Next == NULL)
+return 1;
+else
+}
+return 0;
+int IsLast(Node *Position)
+{
+if(Position-&gt;Next == NULL)
+return 1;
+else
+}
+return 0;
+Node *Find(Node *List, int x)
+{
+Node *Position;
+Position = List-&gt;Next;
+while(Position != NULL &amp;&amp; Position-&gt;Element != x)
+Position = Position-&gt;Next;
+return Position;
+}
+void InsertBeg(Node *List, int e)
+{
+Node *NewNode = malloc(sizeof(Node));
+NewNode-&gt;Element = e;
+if(IsEmpty(List))
+NewNode-&gt;Next = NULL;
+else
+{
+}
+NewNode-&gt;Next = List-&gt;Next;
+
+CS23231 – Data Structures
+
+NewNode-&gt;Next-&gt;Prev = NewNode;
+NewNode-&gt;Prev = List;
+List-&gt;Next = NewNode;
+}
+void InsertLast(Node *List, int e)
+{
+Node *NewNode = malloc(sizeof(Node));
+Node *Position;
+NewNode-&gt;Element = e;
+NewNode-&gt;Next = NULL;
+if(IsEmpty(List))
+{
+}
+else
+{
+}
+}
+NewNode-&gt;Prev = List;
+List-&gt;Next = NewNode;
+Position = List;
+while(Position-&gt;Next != NULL)
+Position = Position-&gt;Next;
+Position-&gt;Next = NewNode;
+NewNode-&gt;Prev = Position;
+void InsertMid(Node *List, int p, int e)
+{
+Node *NewNode = malloc(sizeof(Node));
+Node *Position;
+Position = Find(List, p);
+NewNode-&gt;Element = e;
+
+CS23231 – Data Structures
+
+NewNode-&gt;Next = Position-&gt;Next;
+Position-&gt;Next-&gt;Prev = NewNode;
+Position-&gt;Next = NewNode;
+NewNode-&gt;Prev = Position;
+}
+void DeleteBeg(Node *List)
+{
+if(!IsEmpty(List))
+{
+Node *TempNode;
+TempNode = List-&gt;Next;
+List-&gt;Next = TempNode-&gt;Next;
+if(List-&gt;Next != NULL)
+TempNode-&gt;Next-&gt;Prev = List;
+printf(&quot;The deleted item is %d\n&quot;, TempNode-&gt;Element);
+free(TempNode);
+printf(&quot;List is empty...!\n&quot;);
+void DeleteEnd(Node *List)
+{
+if(!IsEmpty(List))
+{
+}
+else
+}
+Node *Position;
+Node *TempNode;
+Position = List;
+while(Position-&gt;Next != NULL)
+Position = Position-&gt;Next;
+TempNode = Position;
+
+CS23231 – Data Structures
+
+Position-&gt;Prev-&gt;Next = NULL;
+printf(&quot;The deleted item is %d\n&quot;, TempNode-&gt;Element);
+free(TempNode);
+printf(&quot;List is empty...!\n&quot;);
+void DeleteMid(Node *List, int e)
+{
+if(!IsEmpty(List))
+{
+Node *Position;
+Node *TempNode;
+Position = Find(List, e);
+if(!IsLast(Position))
+{
+}
+}
+else
+TempNode = Position;
+Position-&gt;Prev-&gt;Next = Position-&gt;Next;
+Position-&gt;Next-&gt;Prev = Position-&gt;Prev;
+printf(&quot;The deleted item is %d\n&quot;, TempNode-&gt;Element);
+free(TempNode);
+printf(&quot;List is empty...!\n&quot;);
+}
+void Traverse(Node *List)
+{
+if(!IsEmpty(List))
+{
+Node *Position;
+Position = List;
+
+CS23231 – Data Structures
+
+while(Position-&gt;Next != NULL)
+{
+Position = Position-&gt;Next;
+printf(&quot;%d\t&quot;, Position-&gt;Element);
+}
+printf(&quot;\n&quot;);
+
+}
+else
+
+printf(&quot;List is empty...!\n&quot;);
