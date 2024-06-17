@@ -1,0 +1,90 @@
+Write a C program to implement a Binary tree and perform the
+following tree traversal operation.
+(i) Inorder Traversal
+(ii) Preorder Traversal
+(iii) Postorder Traversal
+Algorithm:
+CODE:-
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct Tree
+{ int ele;
+struct Tree *left;
+struct Tree *right;};
+typedef struct Tree tree;
+//tree *root=NULL;
+
+tree *create(tree *root,int x)
+{ if(root==NULL)
+{ tree *newnode=malloc(sizeof(tree));
+newnode-&gt;ele=x;
+newnode-&gt;left=NULL;
+newnode-&gt;right=NULL;
+root=newnode;}
+else if(x&lt;root-&gt;ele)
+{ root-&gt;left=create(root-&gt;left,x);
+}
+else if(x&gt;root-&gt;ele)
+
+CS23231 – Data Structures
+
+{ root-&gt;right=create(root-&gt;right,x);
+}
+return root;
+}
+
+void inorder(tree *root)
+{ if(root!=NULL)
+{ inorder(root-&gt;left);
+printf(&quot;%d &quot;,root-&gt;ele);
+inorder(root-&gt;right);
+}
+
+}
+void preorder(tree *root)
+{ if(root!=NULL)
+{
+printf(&quot;%d &quot;,root-&gt;ele);
+preorder(root-&gt;left);
+preorder(root-&gt;right);
+}
+
+}
+void postorder(tree *root)
+{ if(root!=NULL)
+{
+postorder(root-&gt;left);
+postorder(root-&gt;right);
+printf(&quot;%d &quot;,root-&gt;ele);
+}
+
+}
+
+int main()
+
+CS23231 – Data Structures
+
+{ tree *root=NULL;
+int n,x;
+printf(&quot;ENTER NO OF ELEMENTS&quot;);
+scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;ENTER THE ELEMENTS &quot;);
+for(int i=0;i&lt;n;i++)
+{ scanf(&quot;%d&quot;,&amp;x);
+root=create(root,x);
+}
+printf(&quot;INORDER TRAVERSAL IS &quot;);
+inorder(root);
+printf(&quot;\nPOSTORDER TRAVERSAL IS &quot;);
+postorder(root);
+printf(&quot;\nPREORDER TRAVERSAL IS &quot;);
+preorder(root);
+
+return 0;
+}
+OUTPUT:-
+ENTER NO OF ELEMENTS7
+ENTER THE ELEMENTS 100 90 110 80 95 105 111
+INORDER TRAVERSAL IS 80 90 95 100 105 110 111
+POSTORDER TRAVERSAL IS 80 95 90 105 111 110 100
+PREORDER TRAVERSAL IS 100 90 80 95 110 105 111
